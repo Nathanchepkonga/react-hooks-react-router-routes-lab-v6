@@ -1,8 +1,16 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import NavBar from "../components/NavBar";
-import { actors } from "../data";
 
 function Actors() {
+  const [actors, setActors] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:3000/actors")
+      .then((response) => response.json())
+      .then((data) => setActors(data))
+      .catch((error) => console.error("Error fetching actors:", error));
+  }, []);
+
   return (
     <div>
       <NavBar />
