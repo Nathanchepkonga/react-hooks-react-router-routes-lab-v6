@@ -1,34 +1,28 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import NavBar from "../components/NavBar";
-import { movies } from "../data";
 
 function Movie() {
   const { id } = useParams();
-  const movie = movies.find((movie) => movie.id === parseInt(id));
+  const [movie, setMovie] = useState(null);
 
-  if (!movie) {
-    return (
-      <div>
-        <NavBar />
-        <h1>Movie not found</h1>
-        <p>The movie you're looking for doesn't exist.</p>
-      </div>
-    );
-  }
+  useEffect(() => {
+    fetch(`http://localhost:3000/movies/${id}`)
+      .then((response) => response.json())
+      .then((data) => setMovie(data))
+      .catch((error) => console.error("Error fetching movie:", error));
+  }, [id]);
+
+  if (!movie) return <div>Loading...</div>;
 
   return (
     <div>
       <NavBar />
       <h1>{movie.title}</h1>
       <p>{movie.time} minutes</p>
-      <div>
-        {movie.genres.map((genre, index) => (
-          <span key={index} style={{ marginRight: "10px" }}>
-            {genre}
-          </span>
-        ))}
-      </div>
+      {movie.genres.map((genre, index) => (
+        <span key={index}>{genre}</span>
+      ))}
     </div>
   );
 }
