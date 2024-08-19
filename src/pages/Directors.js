@@ -1,8 +1,16 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import NavBar from "../components/NavBar";
-import { directors } from "../data";
 
 function Directors() {
+  const [directors, setDirectors] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:3000/directors")
+      .then((response) => response.json())
+      .then((data) => setDirectors(data))
+      .catch((error) => console.error("Error fetching directors:", error));
+  }, []);
+
   return (
     <div>
       <NavBar />
