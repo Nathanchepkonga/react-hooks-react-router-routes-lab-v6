@@ -7,14 +7,28 @@ function Movie() {
   const { id } = useParams();
   const movie = movies.find((movie) => movie.id === parseInt(id));
 
+  if (!movie) {
+    return (
+      <div>
+        <NavBar />
+        <h1>Movie not found</h1>
+        <p>The movie you're looking for doesn't exist.</p>
+      </div>
+    );
+  }
+
   return (
     <div>
       <NavBar />
       <h1>{movie.title}</h1>
       <p>{movie.time} minutes</p>
-      {movie.genres.map((genre, index) => (
-        <span key={index}>{genre}</span>
-      ))}
+      <div>
+        {movie.genres.map((genre, index) => (
+          <span key={index} style={{ marginRight: "10px" }}>
+            {genre}
+          </span>
+        ))}
+      </div>
     </div>
   );
 }
